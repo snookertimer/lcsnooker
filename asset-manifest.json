@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/lcsnooker/static/css/main.31975726.css",
+    "main.js": "/lcsnooker/static/js/main.1a5aabbc.js",
+    "index.html": "/lcsnooker/index.html",
+    "main.31975726.css.map": "/lcsnooker/static/css/main.31975726.css.map",
+    "main.1a5aabbc.js.map": "/lcsnooker/static/js/main.1a5aabbc.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.31975726.css",
+    "static/js/main.1a5aabbc.js"
+  ]
+}
