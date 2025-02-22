@@ -1,0 +1,78 @@
+.timer {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 15px;
+  width: 350px;
+  height: 400px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #04ff0c;
+}
+
+.time-display {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.cost {
+  margin-top: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #28a745;
+}
+
+.rate {
+  color: #666;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.history-container {
+  margin-top: 15px;
+  text-align: left;
+}
+
+.history-scroll {
+  height: 150px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: white;
+}
+
+.history-record {
+  padding: 6px;
+  border-bottom: 1px solid #eee;
+  font-size: 0.8rem;
+}
+
+.history-record:last-child {
+  border-bottom: none;
+} 
