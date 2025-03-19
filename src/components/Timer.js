@@ -3,6 +3,7 @@ import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'rea
 const Timer = forwardRef(({ ratePerMinute, order, scheduledRates, savedState }, ref) => {
   const [time, setTime] = useState(savedState?.time || 0);
   const [isRunning, setIsRunning] = useState(false); // Always start paused
+  const [isPausing, setIsPausing] = useState(false);
   const [totalCost, setTotalCost] = useState(0); // Initialize total cost to zero
   const [history, setHistory] = useState(savedState?.history || []);
   const [startTime, setStartTime] = useState(savedState?.startTime ? new Date(savedState.startTime) : null);
@@ -45,8 +46,8 @@ const Timer = forwardRef(({ ratePerMinute, order, scheduledRates, savedState }, 
       intervalId = setInterval(() => {
         setTime(prevTime => {
           const newTime = prevTime + 1;
-          const prevMinute = Math.floor(prevTime / 60) ;
-          const minutes = Math.floor(newTime / 60);
+          const prevMinute = Math.ceil(prevTime / 60) ;
+          const minutes = Math.ceil(newTime / 60);
           // Update costs only when a new minute starts
           if(minutes > prevMinute) {
             const newCost = currentCost + currentRate;
@@ -63,7 +64,6 @@ const Timer = forwardRef(({ ratePerMinute, order, scheduledRates, savedState }, 
   // Rate checking effect
   useEffect(() => {
     let intervalId;
-    if (isRunning) {
       const checkRate = () => {
         const now = new Date();
         const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
@@ -76,21 +76,26 @@ const Timer = forwardRef(({ ratePerMinute, order, scheduledRates, savedState }, 
 
       checkRate();
       intervalId = setInterval(checkRate, 60000);
-    }
+
     return () => clearInterval(intervalId);
   }, [isRunning, scheduledRates, time, currentRate]);
 
   const handleStart = () => {
     setIsRunning(true);
-    setStartTime(new Date());
+    if(!isPausing) {
+      setStartTime(new Date());
+    }
+    setIsPausing(false);
   };
 
   const handlePause = () => {
     setIsRunning(false);
+    setIsPausing(true);
   };
 
   const handleStop = () => {
     setIsRunning(false);
+    setIsPausing(false);
     const endTime = new Date();
     // Reset current cost to zero after stopping
     const historyRecord = {
@@ -99,8 +104,7 @@ const Timer = forwardRef(({ ratePerMinute, order, scheduledRates, savedState }, 
       startTime: formatDateTime(startTime),
       endTime: formatDateTime(endTime),
       duration: formatTime(time),
-      cost: currentCost,
-      timestamp: Date.now()
+      cost: currentCost
     };
 
     // Save to localStorage only
@@ -143,9 +147,9 @@ const Timer = forwardRef(({ ratePerMinute, order, scheduledRates, savedState }, 
     <div className="bg-gray-100 rounded-lg p-4 w-[450px] h-[500px] shadow-md border-2 border-green-400 flex flex-col">
       <h2 className="text-2xl font-bold mb-1">Table {order}</h2>
       <div className="text-6xl font-bold my-1">{formatTime(time)}</div>
-      {/* <div className="text-gray-600 text-sm mb-1">
-        Rate: ${ratePerMinute.toFixed(2)}/min
-      </div> */}
+      <div className={`text-gray-600 text-sm mb-1`}>
+        Rate: ${(currentRate * 60).toFixed(2)}/hour
+      </div>
       <div className={`text-4xl font-bold mb-2 ${isRunning ? 'text-green-600' : 'text-gray-600'}`}>
         {isRunning ? `$${currentCost.toFixed(2)}` : `$${currentCost?.toFixed(2) || '0.00'}`}
       </div>

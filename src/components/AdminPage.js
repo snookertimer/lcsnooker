@@ -168,10 +168,11 @@ const AdminPage = ({ onClose, rates, setRates }) => {
   });
 
   const handleClearLocalStorage = () => {
-    localStorage.clear();
+    // Only clear timer history
+    localStorage.removeItem('timerHistory');
     setAllHistory([]);
     setTotalEarnings(0);
-    setLastTriggerTime(new Date().toLocaleString()); // Set last trigger time to now
+    setLastTriggerTime(new Date().toLocaleString());
   };
 
   if (!isAuthenticated) {
