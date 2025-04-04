@@ -47,8 +47,8 @@ const Timer = forwardRef(({ ratePerMinute, order, scheduledRates, savedState }, 
       intervalId = setInterval(() => {
         setTime(prevTime => {
           const newTime = prevTime + 1;
-          const prevMinute = Math.ceil(prevTime / 6);
-          const minutes = Math.ceil(newTime / 6);
+          const prevMinute = Math.ceil(prevTime / 60);
+          const minutes = Math.ceil(newTime / 60);
           
           // Update costs only when a new minute starts
           if(minutes > prevMinute && !updateRef.current) {
